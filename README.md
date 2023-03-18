@@ -5,6 +5,7 @@ Everybody, please do this: https://forms.gle/dvwovgniCkCScwKP6​ and once added
 FYI on Fridays and Saturdays I deal with your course, usually study myself on Sun and Mon-Thu busy with my other projects so if you have homework then it is better for you to do it on Friday after the class (half of the weeks I go on Friday back to Tartu and can deal in the train/car/etc. And half of the Saturdays if I stay in Tallinn for Friday night🎉)
 
 ## Bookmarks
+* [Hasura Documentation](https://hasura.io/docs/latest/index/) (well, rather a reminder than a bookmark as hey who should bother coming here to click this link vs google "hasura doc" and click the first result)
 * [DrawSQL](https://drawsql.app/teams/study-23/diagrams/course)
 * [Canva Slides](https://www.canva.com/design/DAFdXTQs4P0/1ns8MePSBWTVvqmgq9eV_w/edit?utm_content=DAFdXTQs4P0&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)
 
