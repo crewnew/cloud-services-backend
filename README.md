@@ -1,6 +1,6 @@
 # Cloud-Services Backend
 
-Everybody, please do this: https://forms.gle/dvwovgniCkCScwKP6​ and once added to the repo, please create a branch with your first name. If it is taken then firstname.s (surname initial).​​​​​​
+EVERERYBODY, PLEASE FILL [THIS FORM](https://docs.google.com/forms/d/e/1FAIpQLSekGcQeZW1CQodTJZQUQQrG5CIkZDYiD8pZ09vPFDLG-Or2OA/viewform)​ and once added to the repo, please create a branch with your first name. If it is taken then firstname.s (surname initial).​​​​​​
 
 FYI on Fridays and Saturdays I deal with your course, usually study myself on Sun and Mon-Thu busy with my other projects so if you have homework then it is better for you to do it on Friday after the class (half of the weeks I go on Friday back to Tartu and can deal in the train/car/etc. And half of the Saturdays if I stay in Tallinn for Friday night🎉)
 
