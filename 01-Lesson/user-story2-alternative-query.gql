@@ -1,0 +1,12 @@
+query get_emails_of_users_of_companies_with_unpaid_invoices {
+  companies(where: { invoices: { status: { _eq: "unpaid" } } }) {
+    company_name
+    phone_number
+    invoices(where: { status: { _eq: "unpaid" } }) {
+      total
+    }
+    users {
+      email
+    }
+  }
+}
