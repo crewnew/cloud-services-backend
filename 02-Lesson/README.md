@@ -64,6 +64,16 @@ objects: {
  
  Or multiple objects in the array. See examples.
 
+ #### Update mutation
+ Screenshots from the book:
+ * https://i.imgur.com/YxY24h6.png
+ * https://i.imgur.com/Yq7zwgM.png
+
+#### Delete mutation
+https://i.imgur.com/dUPhVC3.png
+
+(Teaser: upsert next time: It is an insert mutation with on_conflict argument that will first check if there’s no conflict with another row in the table. If there is any conflict then it will instead of inserting a new record, update the existing one or ignore the request.)
+
 ### Mutation exercise from email
 https://mail.google.com/mail/u/1/#drafts?compose=GTvVlcSBnNPWSlfRwWTpbFSlwxbCngGGxnPdgDrwBTzrQcMGrPxCxGpzptlhhDnXQzcSxScQLJsfq
 ### Docker on Win10/11
