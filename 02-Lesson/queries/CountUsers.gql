@@ -1,0 +1,10 @@
+query CountUsers {
+  users_aggregate {
+    aggregate {
+      count(
+        columns: role, 
+        distinct: true
+      )
+    }
+  }
+}

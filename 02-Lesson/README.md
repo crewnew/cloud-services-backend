@@ -31,8 +31,16 @@ Did we learn the cool new button on the "Data" -> "Users" for example:
 Prettify (what's the keyboard shortcut in VSC?), History (and favoriting),  
 
 ### Limit and offset
+Most use-cases for the limit: do not want to get too many if there's tons of data
+Most use-cases for offset: pagination but also for example when I'm checking for the new data for example with CRON job (you know what it is?) then I will remember the last item ID and offset on the next request.
 
-Most use-cases: pagination
+### Aggregation
+If you look at the Explorer on the left and the documentation part on the right you will notice that you have there for example, also `users_aggregate` and if you open it up you will already get more clue what it is all about.
+
+You can fetch various aggregations on your columns like `count` to count for example the total number of users or you can also set the `distinct: true` for the `columns: role` and count the amount of of users belong to the different role. In my example I have all users' role 1 or 2 so the result for me will be 2.
+
+Another popular aggregation is `sum` for getting for example the total amount of money made during a certain time period but also finding with `min`, `max`, and `avg` for example, the smallest, the biggest and the average invoices. There are also more complex statistical aggregations like `variance`, `var_pop` and `var_samp` that stand for sample variance in statistics and one good place to read about them is https://statisticshowto.com We are also not going to cover in-depth `stddev`, `stddev_pop` and
+`stddev_samp` that stand for the standard deviation of the values that measure of how spread out numbers are. You can read more about that here: https://mathsisfun.com/data/standarddeviation.html It can be used for example to find anomalies. 
 
 ### Mutations
 Hasura GraphQL Engine automatically generates GraphQL mutation fields for inserting, updating, or deleting data based on your database's schema. For any tracked table, a set of mutations are generated and exposed as part of the GraphQL API.
