@@ -16,3 +16,5 @@ Feel free to add useful notes' pull requests from your branch.
 Hasura column default string and column type "text": `'NoSurname'::text`
 
 🚨 (IMPORTANT TO REMEMBER): CTRL + ENTER in GraphiQL, [Thunder Client for VSC](https://marketplace.visualstudio.com/items?itemName=rangav.vscode-thunder-client), [GraphQL Playground](https://github.com/graphql/graphql-playground) or similar.
+
+🚨 (IMPORTANT TO REMEMBER): Naming! Names like ´q1´, ´q1´, ´i´, ´funny´, ´bla´ in Queries, Variables, Functions, classes, table names, columns, everywhere are forbidden. If I see such things on your repo, you get a huge minus and won't be probably hired.
