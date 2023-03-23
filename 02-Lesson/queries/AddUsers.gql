@@ -1,0 +1,12 @@
+mutation AddUsers {
+  insert_users(
+    objects: {
+      first_name: "Uugo"
+      email: "uugo@uugometsast.ee"
+      role: 2
+      company_id: 2
+    }
+  ) {
+    affected_rows
+  }
+}

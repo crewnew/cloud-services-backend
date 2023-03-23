@@ -1,0 +1,12 @@
+mutation AddUsersAndCompanies {
+  insert_users(
+    objects: {
+      first_name: "PisiUugo"
+      email: "pisiuugo@uugometsast.ee"
+      role: 2
+      company: { data: { company_name: "Uugo & Sons LLC", phone: "5288846" } }
+    }
+  ) {
+    affected_rows
+  }
+}
