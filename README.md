@@ -40,3 +40,4 @@ API reference here: https://hasura.io/docs/latest/api-reference/graphqlapi/query
 
 You can use also group multiple filtering criteria in the same where clause using the _and, the _or
 and the _not operators. This way we can make the queries pretty complex.
+
