@@ -38,5 +38,9 @@ more: https://www.postgresql.org/docs/current/functions-matching.html
 PostgreSQL types JSON or JSONB. Read more about list-based search operators in the Hasura
 API reference here: https://hasura.io/docs/latest/api-reference/graphqlapi/query/#generic-operators
 
-You can use also group multiple filtering criteria in the same where clause using the _and, the _or
-and the _not operators. This way we can make the queries pretty complex.
+You can use also group multiple filtering criteria in the same where clause using the `_and`, the `_or`
+and the `_not` operators. This way we can make the queries pretty complex.
+
+#### ChatGPT
+* Enable DUDE to know latest data (else it's in 2019): https://gist.github.com/coolaj86/6f4f7b30129b0251f61fa7baaa881516
+* Some guidance for "acts as" and "prompts": https://github.com/f/awesome-chatgpt-prompts
