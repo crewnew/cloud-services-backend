@@ -59,12 +59,18 @@ This command will create a new folder inside the migrations directory with the g
 
 7. Commit/push
 8. Modify your schema using the localhost Hasura console
-9. Commit/push
+9. Commit/push. Now you should see something like this: https://github.com/crewnew-git/cloud-services-backend/commit/cad357e0d41410e1d8825ab9f53554d1ddeb6ac9
 10. Once imaginary co-workers have approved, they will:
 
-`hasura migrate apply`
-and
 `hasura metadata apply`
+and
+`hasura migrate apply`
+
+If you see the message "nothing to apply on database: default" even though there are new migrations in your migrations directory, it's possible that the migration status is out of sync between your local Hasura project and your Hasura instance.
+
+Reset the migrations on your Hasura instance: `hasura migrate apply --down all` This command will undo all applied migrations on your Hasura instance. Be careful when using this command, as it may result in data loss or schema changes.
+
+Apply the migrations again: `hasura migrate apply` This command should now apply all migrations in your migrations directory, including the new changes.
 
 ## Relationships
 
