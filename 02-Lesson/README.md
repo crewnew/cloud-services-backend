@@ -49,12 +49,18 @@ Just as with queries, as soon you paste in your connection string and track (you
 
 #### Insert Mutation
 
-There's `inser_tablename` and `insert_tablename_one`. I'm not really sure why one should use at all the last one. If you think that you just insert users one by one and then one day plan to insert multiple then you need to change the query. Why? 
+There's `insert_tablename` and `insert_tablename_one`. I'm not really sure why one should use at all the last one. If you think that you just insert users one by one and then one day plan to insert multiple then you need to change the query. Why? 
 
 In `insert` the JSON objects argument is necessary and you can pass multiple objects to the mutation. Eg.
 
 ```
 objects: {
+      first_name: "Uugo"
+      email: "uugo@uugometsast.ee"
+      role: 2
+      company_id: 2
+    },
+    {
       first_name: "Uugo"
       email: "uugo@uugometsast.ee"
       role: 2
