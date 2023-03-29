@@ -15,6 +15,57 @@ Consistency! Always good thing! UTC ensures that you have a consistent time base
 
 Also flexibility. By storing data in UTC, you can easily convert it to any other time zone when presenting it to users. Useful again for apps with users in multiple time zones or when users traveling between time zones.
 
+## Use CLI
+
+1. Install Hasura CLI:
+
+Download the appropriate binary for your operating system from the official Hasura CLI GitHub releases page: https://github.com/hasura/graphql-engine/releases
+
+It's under "Assets" at the bottom: https://i.imgur.com/c99841v.png
+
+Save the file wih name `hasura.exe` under the folder you will create the folder with Hasura metadata, migrations and seeds. On UNIX terminal:
+
+`curl -L https://github.com/hasura/graphql-engine/raw/stable/cli/get.sh | INSTALL_PATH=/usr/local/bin bash`
+
+2. Set up a new Hasura project:
+
+To create a new Hasura project, open a terminal, navigate to your desired directory, and run the following command: `hasura init cloud-services-hasura`
+
+This will create a new directory called `cloud-services-hasura` with the necessary configuration files.
+
+3. Create [.gitignore](https://github.com/crewnew-git/cloud-services-backend/blob/main/.gitignore) file
+
+4. Move `config.yml` away from the folder temporarily, create a repo from the folder & commit/puh. Add the configuration file back.
+
+5. Configure your Hasura project:
+
+Open the folder in VSCode. CD to it and `code .`. Open the `config.yaml` file in your favorite text editor and update it according to [../hasura/config.yaml](../hasura/config.yaml)
+
+NOTE: If not Cloud, then endpoint must end with `/v1/graphql` of course!!! Hasura CLI requires the root endpoint of the Hasura Cloud project without the /v1/graphql path. WEIRD!
+
+4. Run Hasura console:
+
+Run the following command from the project directory in VSCode: `hasura console`
+
+5. `hasura metadata export`
+
+This command will export the metadata and create a metadata directory inside your Hasura project folder with files like `tables.yaml` or `query_collections.yaml`/`rest_endpoints.yaml` with REST queries, [relations/permissions](https://github.com/crewnew-git/cloud-services-backend/blob/main/metadata/databases/default/tables/public_rooms.yaml) etc., depending on the features you've used in your Hasura instance.
+
+6. To export the migrations, run the following command:
+
+`hasura migrate create <migration_name> --from-server`(name, eg.`init`)
+
+This command will create a new folder inside the migrations directory with the given migration name and a timestamp/version. The folder will contain two files: up.sql and down.sql, representing the forward and backward migration steps, respectively. Initial one won't have down.
+
+7. Commit/push
+8. Modify your schema using the localhost Hasura console
+9. Commit/push
+10. Once imaginary co-workers have approved, they will:
+
+`hasura migrate apply`
+and
+`hasura metadata apply`
+
 ## Relationships
 
 ### Repeat the super important FK (foreign key) in O2M
