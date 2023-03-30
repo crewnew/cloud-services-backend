@@ -15,7 +15,7 @@ Consistency! Always good thing! UTC ensures that you have a consistent time base
 
 Also flexibility. By storing data in UTC, you can easily convert it to any other time zone when presenting it to users. Useful again for apps with users in multiple time zones or when users traveling between time zones.
 
-## Use CLI
+## Use CLI (command line interface)
 
 1. Install Hasura CLI:
 
