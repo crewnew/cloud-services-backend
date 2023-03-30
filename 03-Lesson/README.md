@@ -72,6 +72,8 @@ Reset the migrations on your Hasura instance: `hasura migrate apply --down all` 
 
 Apply the migrations again: `hasura migrate apply` This command should now apply all migrations in your migrations directory, including the new changes.
 
+More about CLI in the documentation: https://hasura.io/docs/latest/hasura-cli/commands/hasura_migrate_create/
+
 ## Relationships
 
 ### Repeat the super important FK (foreign key) in O2M
