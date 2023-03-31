@@ -1,11 +1,42 @@
 # 03 - Lesson
 
 ## Homework check
-### 1. As a admin, I want to get the total amount of all invoices for a specific company. I want to be able to find the company by remembering just part of its name.
+### 1. As a admin, I want to get the total amount of all invoices for a specific company. I want to be able to find the company by  remembering just part of its name.
+
+
+![](images/Homework%201%20-%20Ilja%20almost%20correct%20answer.png)
+
+What's wrong here? You count for each company the invoices so you need to do some math in frontend. You should start your query with `invoices_aggregate` and then there do the where company name `iregex` or `ilike` that is more logical as case in-sensitive but it would been correct also with `regex` and `like` (case sensitive) as the user story doesn't state it must be case in-sensitive.
+
+I didn't send it back to Ilja because it is my fault that I didn't define that the queries must be built in a most efficient way so that there's no math needed in the front-end if possible. Also, doing one query only if possible instead of multiple. How we could do the same thing with multiple queries? First query all the company `id`'s that match the search pattern and then build a new query in the front-end and query the count of invoices for those companies and then reach to the point where Ilja's work was - sum up.
+
+Here's a correct answer:
+
+![](images/Homework%201%20-%20Correct%20answer.png)
+
+Note: using `ilike` instead that is also correct but I'd prefer also `iregex` like Ilja did because you want to have your queries maximum re-usable and Regex gives surely more options without the change of the query. Why universal queries are better? Well, because then you have to make less changes in your front-end (= less chances to mess something up) or for example when you use the query for REST API then you have to create less REST API endpoints.
+
+### Previous homework
+
+Note2: compare my naming to Ilja naming. Do you understand why some queries are better? Rise hands who watched at least half of the first homework? What did Uncle Bob say there?
+
+PS. What videos do you wach from YouTube?
 
 ### 2. As an admin, I want to be able to mass delete bookings for a specific room between specific date range.
 
-I have used a timezone for the time `+01` that is central European time. Actually I like to use UK time mostly because I'm in Europe and work with other European people in Central and Western Europe so it makes easier for this use case. In Estonia at the moment is DST (daylight saving time) `+03` and in the winter `+02` and if I knew all the users are from the same timezone I would surely go with that timezone. In this example, correct is with timezone already because it is a physical room booking and that room is in a specific timezone.
+[](images/Homework%202%20-%20Ilja%20almost%20correct%20answer.png)
+
+What's wrong here? Again, I can't call it wrong because I wasn't precise enough with my user story. But from an experienced developer I would expect to understand what I mean. Obviously I wouldn't care as a user when the booking was created. I most probably want to get rid of the booking for some room that was booked between some dates. Maybe some super important thing came in so everybody shall be cancelled or it needs to go to renovation. Of course, then there must be some other actions too: inform everybody, say sorry, issue refund, issue discount to book another room, etc. Try to think always what could be the use-case. People doesn't give precise user stories and will tell you "there's a bug" at one moment and then you go nuts trying to understand "hat the heck!!!!". Tiny details. Detail orientation is all about development! Correct user story would end like this: "between specific date range **the room was booked**". So I would expect you to use `date` instead of `created_at`.
+
+![](images/Homework%202%20-%20Correct%20answer.png)
+
+Note: `_and` in my query - it is actually not necessary and Ilja's works exactly the same but we will touch that topic today.
+
+Note2: Better naming.
+
+Note3: Returning some useful data. Here Ilja isn't wrong at all again. Affected rows is fine. Just say "Deleted 2 reservations" in the front-end but just bringing an example where we could say display the date and timeframe we just cleaned up for the room.
+
+In my case I have used a timezone for the time `+01` that is central European time. Actually I like to use UK time mostly because I'm in Europe and work with other European people in Central and Western Europe so it makes easier for this use case. In Estonia at the moment is DST (daylight saving time) `+03` and in the winter `+02` and if I knew all the users are from the same timezone I would surely go with that timezone. In this example, correct is with timezone already because it is a physical room booking and that room is in a specific timezone.
 
 I would use the timezone also when signing some contracts or any other legal reasons. Then we want to have the user's local timestamp with timezone.
 
@@ -14,65 +45,6 @@ At most cases, it is preferrable using UTC (Coordinated Universal Time) - letter
 Consistency! Always good thing! UTC ensures that you have a consistent time base, regardless of where your users are located. And easier to compare and sort timestamps. And it avoids potential issues with time zone differences. And daylight saving time changes. Pretty many advatages, right?
 
 Also flexibility. By storing data in UTC, you can easily convert it to any other time zone when presenting it to users. Useful again for apps with users in multiple time zones or when users traveling between time zones.
-
-## Use CLI (command line interface)
-
-1. Install Hasura CLI:
-
-Download the appropriate binary for your operating system from the official Hasura CLI GitHub releases page: https://github.com/hasura/graphql-engine/releases
-
-It's under "Assets" at the bottom: https://i.imgur.com/c99841v.png
-
-Save the file wih name `hasura.exe` under the folder you will create the folder with Hasura metadata, migrations and seeds. On UNIX terminal:
-
-`curl -L https://github.com/hasura/graphql-engine/raw/stable/cli/get.sh | INSTALL_PATH=/usr/local/bin bash`
-
-2. Set up a new Hasura project:
-
-To create a new Hasura project, open a terminal, navigate to your desired directory, and run the following command: `hasura init cloud-services-hasura`
-
-This will create a new directory called `cloud-services-hasura` with the necessary configuration files.
-
-3. Create [.gitignore](https://github.com/crewnew-git/cloud-services-backend/blob/main/.gitignore) file
-
-4. Move `config.yml` away from the folder temporarily, create a repo from the folder & commit/puh. Add the configuration file back.
-
-5. Configure your Hasura project:
-
-Open the folder in VSCode. CD to it and `code .`. Open the `config.yaml` file in your favorite text editor and update it according to [../hasura/config.yaml](../hasura/config.yaml)
-
-NOTE: If not Cloud, then endpoint must end with `/v1/graphql` of course!!! Hasura CLI requires the root endpoint of the Hasura Cloud project without the /v1/graphql path. WEIRD!
-
-4. Run Hasura console:
-
-Run the following command from the project directory in VSCode: `hasura console`
-
-5. `hasura metadata export`
-
-This command will export the metadata and create a metadata directory inside your Hasura project folder with files like `tables.yaml` or `query_collections.yaml`/`rest_endpoints.yaml` with REST queries, [relations/permissions](https://github.com/crewnew-git/cloud-services-backend/blob/main/metadata/databases/default/tables/public_rooms.yaml) etc., depending on the features you've used in your Hasura instance.
-
-6. To export the migrations, run the following command:
-
-`hasura migrate create <migration_name> --from-server`(name, eg.`init`)
-
-This command will create a new folder inside the migrations directory with the given migration name and a timestamp/version. The folder will contain two files: up.sql and down.sql, representing the forward and backward migration steps, respectively. Initial one won't have down.
-
-7. Commit/push
-8. Modify your schema using the localhost Hasura console
-9. Commit/push. Now you should see something like this: https://github.com/crewnew-git/cloud-services-backend/commit/cad357e0d41410e1d8825ab9f53554d1ddeb6ac9
-10. Once imaginary co-workers have approved, they will:
-
-`hasura metadata apply`
-and
-`hasura migrate apply`
-
-If you see the message "nothing to apply on database: default" even though there are new migrations in your migrations directory, it's possible that the migration status is out of sync between your local Hasura project and your Hasura instance.
-
-Reset the migrations on your Hasura instance: `hasura migrate apply --down all` This command will undo all applied migrations on your Hasura instance. Be careful when using this command, as it may result in data loss or schema changes.
-
-Apply the migrations again: `hasura migrate apply` This command should now apply all migrations in your migrations directory, including the new changes.
-
-More about CLI in the documentation: https://hasura.io/docs/latest/hasura-cli/commands/hasura_migrate_create/
 
 ## Relationships
 
@@ -87,19 +59,24 @@ FK from the plural side (many side) to the PK (primary key) in the singular side
 ### Enum (enumerated)
 Specific type of table that contains a predefined list of values. Enum tables are often used when you have a column that should only accept a limited number of distinct values. For example, a "status" column could have values like "pending", "approved", or "rejected". What else could be Eenum in our schema?
 
-Create enum-roles (customer, vip, manager, worker)
+Create enum-roles (customer, vip, manager, worker):
+![](images/Relationships-5-Enum-Roles.png)
 
-Update (test) data query.
+Update data query: https://i.imgur.com/ih9ZKx1.png (well, actually you shall run at this case it for each role eg. 1 = customer, etc).
 
 Create the foreign key. Which side? But don't go to the permissions. I show you another smart shortcut: `/console/data/default/schema/public`
 
-Test it out. Get all the workers user data. 
+Test it out. Get all the workers user data. https://i.imgur.com/iLhUWkC.png
 
 ## Predicate
 
 When you use an aggregate functions like `count`, `average` etc. you can filter the results based on a condition(s) using the `predicate` property. 
 
 ### 3. As a marketing manager, I want to email some marketing stuff to all the users who haven't made any bookings.
+
+![](images/User%20Story%203.png)
+
+Check `GPT` images under `/images` to see how I used the tool to get this done quick. Also, added at the bottom of the root README two cool URLs so you can DUDE your GTP and learn to use "prompts" and "acts". 
 
 ## `_and`, `_or` and `_not` operators
 
@@ -183,9 +160,23 @@ mutation UpsertArticle {
 
 Now make yourself a query where we inser some user data and if the email address exists then update the user.
 
+![UpsertUsers](images/Upsert.png)
+
 ## User story 1: As a customer I want to add reviews for the rooms
 
-Need to makse some changes in the database but first, please help your customer to properly write this user story. 
+Need to makse some changes in the database but first, please help your customer to properly write this user story. We need probably:
+
+1. Can add review only if has a booking
+2. The booking shall be in the past
+3. There shall be no reviews already for this booking
+4. What type(s) the review will have? I can suggest for example: "text" (max. 1024 chars) and "integer" (1-5) that I would call `rating_stars`. You may want to add also "title" for the review and many other parameters like separately rate "cleanness" and/or any other parameters. Ask GPT if you run out of ideas but want to make it super complex😊
+5. Should the review be left in behalf of the company or the user? Company will be "cheaper" as we can use O2O.
+
+Now, go and make the DB changes. First let's draw in the whiteboard, how to add it into [our existing ER diagram](https://i.imgur.com/nmZBsXN.png).
+
+[Final result](images/Relationships-4-Add-O2O-reviews.png)
+
+Now, like always, add some test data.
 
 ## Hints
 * Play button at GraphiQL can execute only one query if you have multiple there
