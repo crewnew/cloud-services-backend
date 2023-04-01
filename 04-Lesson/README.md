@@ -1,57 +1,64 @@
-# 03 - Lesson
+# Lesson 4
 
-## Homework check
-### 1. As a admin, I want to get the total amount of all invoices for a specific company. I want to be able to find the company by  remembering just part of its name.
+## Hasura CLI (command line interface) 
 
+1. Install Hasura CLI:
 
-![](images/Homework%201%20-%20Ilja%20almost%20correct%20answer.png)
+Console is GUI (graphical user interface). Now [download the latest version of the Hasura CLI](https://github.com/hasura/graphql-engine/releases). Scoll down and find under the assets: https://i.imgur.com/KmjgZV4.png On Windows save the file in the root folder where you keep your repos in your computer as `hasura.exe`
 
-What's wrong here? You count for each company the invoices so you need to do some math in frontend. You should start your query with `invoices_aggregate` and then there do the where company name `iregex` or `ilike` that is more logical as case in-sensitive but it would been correct also with `regex` and `like` (case sensitive) as the user story doesn't state it must be case in-sensitive.
+On UNIX terminal:
 
-I didn't send it back to Ilja because it is my fault that I didn't define that the queries must be built in a most efficient way so that there's no math needed in the front-end if possible. Also, doing one query only if possible instead of multiple. How we could do the same thing with multiple queries? First query all the company `id`'s that match the search pattern and then build a new query in the front-end and query the count of invoices for those companies and then reach to the point where Ilja's work was - sum up.
+`curl -L https://github.com/hasura/graphql-engine/raw/stable/cli/get.sh | INSTALL_PATH=/usr/local/bin bash`
 
-Here's a correct answer:
+2. Set up a new Hasura project:
 
-![](images/Homework%201%20-%20Correct%20answer.png)
+To create a new Hasura project, open a terminal, navigate to your desired directory, and run the following command: `hasura init cloud-services-hasura`
 
-Note: using `ilike` instead that is also correct but I'd prefer also `iregex` like Ilja did because you want to have your queries maximum re-usable and Regex gives surely more options without the change of the query. Why universal queries are better? Well, because then you have to make less changes in your front-end (= less chances to mess something up) or for example when you use the query for REST API then you have to create less REST API endpoints.
+This will create a new directory called `cloud-services-hasura` with the necessary configuration files.
 
-### Previous homework
+3. Create [.gitignore](https://github.com/crewnew-git/cloud-services-backend/blob/main/.gitignore) file
 
-Note2: compare my naming to Ilja naming. Do you understand why some queries are better? Rise hands who watched at least half of the first homework? What did Uncle Bob say there?
+4. Move `config.yml` away from the folder temporarily, create a repo from the folder & commit/puh. Add the configuration file back.
 
-PS. What videos do you wach from YouTube?
+5. Configure your Hasura project:
 
-### 2. As an admin, I want to be able to mass delete bookings for a specific room between specific date range.
+Open the folder in VSCode. CD to it and `code .`. Open the `config.yaml` file in your favorite text editor and update it according to [../hasura/config.yaml](../hasura/config.yaml)
 
-[](images/Homework%202%20-%20Ilja%20almost%20correct%20answer.png)
+NOTE: If not Cloud, then endpoint must end with `/v1/graphql` of course!!! Hasura CLI requires the root endpoint of the Hasura Cloud project without the /v1/graphql path. WEIRD!
 
-What's wrong here? Again, I can't call it wrong because I wasn't precise enough with my user story. But from an experienced developer I would expect to understand what I mean. Obviously I wouldn't care as a user when the booking was created. I most probably want to get rid of the booking for some room that was booked between some dates. Maybe some super important thing came in so everybody shall be cancelled or it needs to go to renovation. Of course, then there must be some other actions too: inform everybody, say sorry, issue refund, issue discount to book another room, etc. Try to think always what could be the use-case. People doesn't give precise user stories and will tell you "there's a bug" at one moment and then you go nuts trying to understand "hat the heck!!!!". Tiny details. Detail orientation is all about development! Correct user story would end like this: "between specific date range **the room was booked**". So I would expect you to use `date` instead of `created_at`.
+4. Run Hasura console:
 
-![](images/Homework%202%20-%20Correct%20answer.png)
+Run the following command from the project directory in VSCode: `hasura console` or if you are allowed to work in production environment (or dev environment in server) you can `hasura console --endpoint "https://cloud-services.hasura.app" --admin-secret "your-secret-here"`
 
-Note: `_and` in my query - it is actually not necessary and Ilja's works exactly the same but we will touch that topic today.
+1. `hasura metadata export`
 
-Note2: Better naming.
+This command will export the metadata and create a metadata directory inside your Hasura project folder with files like `tables.yaml` or `query_collections.yaml`/`rest_endpoints.yaml` with REST queries, [relations/permissions](https://github.com/crewnew-git/cloud-services-backend/blob/main/metadata/databases/default/tables/public_rooms.yaml) etc., depending on the features you've used in your Hasura instance.
 
-Note3: Returning some useful data. Here Ilja isn't wrong at all again. Affected rows is fine. Just say "Deleted 2 reservations" in the front-end but just bringing an example where we could say display the date and timeframe we just cleaned up for the room.
+6. To export the migrations, run the following command:
 
-In my case I have used a timezone for the time `+01` that is central European time. Actually I like to use UK time mostly because I'm in Europe and work with other European people in Central and Western Europe so it makes easier for this use case. In Estonia at the moment is DST (daylight saving time) `+03` and in the winter `+02` and if I knew all the users are from the same timezone I would surely go with that timezone. In this example, correct is with timezone already because it is a physical room booking and that room is in a specific timezone.
+`hasura migrate create <migration_name> --from-server`(name, eg.`init`)
 
-I would use the timezone also when signing some contracts or any other legal reasons. Then we want to have the user's local timestamp with timezone.
+This command will create a new folder inside the migrations directory with the given migration name and a timestamp/version. The folder will contain two files: up.sql and down.sql, representing the forward and backward migration steps, respectively. Initial one won't have down.
 
-At most cases, it is preferrable using UTC (Coordinated Universal Time) - letter Z at the end. Why?
+7. Commit/push
+8. Modify your schema using the localhost Hasura console
+9. Commit/push. Now you should see and track changes: https://github.com/crewnew-git/cloud-services-backend/commit/4325bcb5c54e01c92f45e57f5198ed9b58df8595
+10. Once imaginary co-workers have approved, they will:
 
-Consistency! Always good thing! UTC ensures that you have a consistent time base, regardless of where your users are located. And easier to compare and sort timestamps. And it avoids potential issues with time zone differences. And daylight saving time changes. Pretty many advatages, right?
+`hasura metadata apply`
+and
+`hasura migrate apply`
 
-Also flexibility. By storing data in UTC, you can easily convert it to any other time zone when presenting it to users. Useful again for apps with users in multiple time zones or when users traveling between time zones.
+If you see the message "nothing to apply on database: default" even though there are new migrations in your migrations directory, it's possible that the migration status is out of sync between your local Hasura project and your Hasura instance.
 
-## Relationships
+Reset the migrations on your Hasura instance: `hasura migrate apply --down all` This command will undo all applied migrations on your Hasura instance. Be careful when using this command, as it may result in data loss or schema changes.
 
-### Repeat the super important FK (foreign key) in O2M
-FK from the plural side (many side) to the PK (primary key) in the singular side.
-![](images/Relationships%201%20-%20Foreign%20key.png)
+Apply the migrations again: `hasura migrate apply` This command should now apply all migrations in your migrations directory, including the new changes.
 
-### O2O
-![](images/Relationships%202%20-%20one2one.png)
-![](images/Relationships%203%20-%20why%20one2one%20and%20in%20Hasura.png)
+### hasura migrate squash
+
+If you have a lot of migrations that you want to squash into a single one:
+
+`hasura migrate squash --name "<name>" --from 1680098627629 -to 1680116894316` - if you want 'em all do not use `-to`
+
+[Squash documentation](https://hasura.io/docs/latest/hasura-cli/commands/hasura_migrate_squash/) and [All CLI commands doc](https://hasura.io/docs/latest/hasura-cli/commands/index/).
