@@ -67,6 +67,22 @@ Apply the migrations again: `hasura migrate apply` This command should now apply
 
 Problems with inconsistent metadata? This command, when used with subcommands, can be used to manage inconsistent objects in Hasura metadata. Options include: `hasura metadata inconsistency list`, `hasura metadata inconsistency delete`, `hasura metadata inconsistency status`, `hasura metadata reload` and hasura `metadata inconsistency drop`
 
+To add a shortcut for example to your desktop to quickly launch the Hasura console in Windows, create a `HasuraProjectName.bat` file in desktop and add to its content:
+
+```
+@echo off
+cd C:\Git\path\to\your\hasura
+hasura console
+```
+
+On MacOS and Linux create `HasuraProjectName.sh` file:
+
+```
+#!/bin/bash
+cd /path/to/your/hasura
+hasura console
+```
+
 ### hasura migrate squash
 
 If you have a lot of migrations that you want to squash into a single one:
