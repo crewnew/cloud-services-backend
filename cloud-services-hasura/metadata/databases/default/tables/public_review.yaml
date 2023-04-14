@@ -1,0 +1,10 @@
+table:
+  name: review
+  schema: public
+object_relationships:
+  - name: company
+    using:
+      foreign_key_constraint_on: company_id
+  - name: reservation
+    using:
+      foreign_key_constraint_on: id

@@ -1,0 +1,7 @@
+- "!include public_companies.yaml"
+- "!include public_invoices.yaml"
+- "!include public_reservations.yaml"
+- "!include public_review.yaml"
+- "!include public_roles.yaml"
+- "!include public_rooms.yaml"
+- "!include public_users.yaml"

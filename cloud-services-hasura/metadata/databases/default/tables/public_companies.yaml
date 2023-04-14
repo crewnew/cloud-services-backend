@@ -1,0 +1,32 @@
+table:
+  name: companies
+  schema: public
+array_relationships:
+  - name: invoices
+    using:
+      foreign_key_constraint_on:
+        column: company_id
+        table:
+          name: invoices
+          schema: public
+  - name: reservations
+    using:
+      foreign_key_constraint_on:
+        column: company_id
+        table:
+          name: reservations
+          schema: public
+  - name: reviews
+    using:
+      foreign_key_constraint_on:
+        column: company_id
+        table:
+          name: review
+          schema: public
+  - name: users
+    using:
+      foreign_key_constraint_on:
+        column: company_id
+        table:
+          name: users
+          schema: public

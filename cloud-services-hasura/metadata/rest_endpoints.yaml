@@ -1,0 +1,20 @@
+- comment: ""
+  definition:
+    query:
+      collection_name: allowed-queries
+      query_name: reservations
+  methods:
+    - POST
+    - GET
+  name: reservations
+  url: reservations
+- comment: ""
+  definition:
+    query:
+      collection_name: allowed-queries
+      query_name: rooms
+  methods:
+    - POST
+    - GET
+  name: rooms
+  url: rooms
