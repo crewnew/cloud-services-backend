@@ -5,3 +5,9 @@ object_relationships:
   - name: company
     using:
       foreign_key_constraint_on: company_id
+computed_fields:
+  - name: full_name
+    definition:
+      function:
+        name: full_name
+        schema: public
