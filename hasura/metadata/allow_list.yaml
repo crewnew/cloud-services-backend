@@ -1,0 +1,5 @@
+- collection: allowed-queries
+  scope:
+    global: false
+    roles:
+      - public

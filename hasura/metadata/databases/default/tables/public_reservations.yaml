@@ -1,0 +1,17 @@
+table:
+  name: reservations
+  schema: public
+object_relationships:
+  - name: company
+    using:
+      foreign_key_constraint_on: company_id
+  - name: review
+    using:
+      foreign_key_constraint_on:
+        column: id
+        table:
+          name: reviews
+          schema: public
+  - name: room
+    using:
+      foreign_key_constraint_on: rooms_id

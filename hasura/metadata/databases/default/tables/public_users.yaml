@@ -1,0 +1,10 @@
+table:
+  name: users
+  schema: public
+object_relationships:
+  - name: company
+    using:
+      foreign_key_constraint_on: company_id
+  - name: roleByRole
+    using:
+      foreign_key_constraint_on: role

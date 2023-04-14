@@ -1,0 +1,3 @@
+table:
+  name: banned_emails
+  schema: public

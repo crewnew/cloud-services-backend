@@ -1,0 +1,7 @@
+version: 3
+endpoint: https://national-vulture-91.hasura.app
+admin_secret: VuPrGyLPVuNTSmmd2fyPDoeV2V0kmttElE0ANIGtmstIvd28xYgSPR6DKgafWS4J
+metadata_directory: metadata
+actions:
+  kind: synchronous
+  handler_webhook_baseurl: http://localhost:3000
