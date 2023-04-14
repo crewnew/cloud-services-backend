@@ -4,3 +4,4 @@
 - "!include public_reviews.yaml"
 - "!include public_rooms.yaml"
 - "!include public_users.yaml"
+- "!include public_users_roles.yaml"
