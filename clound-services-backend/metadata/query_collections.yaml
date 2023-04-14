@@ -1,1 +1,17 @@
-[]
+- name: allowed-queries
+  definition:
+    queries:
+      - name: Reservations
+        query: |
+          query GetReservations {
+            reservations {
+              date
+              company_id
+              id
+              length_minutes
+              room_id
+              time
+              created_at
+              updated_at
+            }
+          }
