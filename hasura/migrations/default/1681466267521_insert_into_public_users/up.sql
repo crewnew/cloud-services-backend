@@ -1,0 +1,1 @@
+INSERT INTO "public"."users"("verified", "company_id", "id", "email", "first_name", "last_name", "role", "created_at", "updated_at") VALUES (true, 1, 18, E'jan.kangi@tpt.tp', E'Jan', E'Kangi', E'worker', E'2023-04-14T09:57:47.262698+00:00', E'2023-04-14T09:57:47.262698+00:00');
