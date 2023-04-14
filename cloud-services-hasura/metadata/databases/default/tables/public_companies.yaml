@@ -1,0 +1,18 @@
+table:
+  name: companies
+  schema: public
+array_relationships:
+  - name: invoices
+    using:
+      foreign_key_constraint_on:
+        column: company_id
+        table:
+          name: invoices
+          schema: public
+  - name: users
+    using:
+      foreign_key_constraint_on:
+        column: company_id
+        table:
+          name: users
+          schema: public

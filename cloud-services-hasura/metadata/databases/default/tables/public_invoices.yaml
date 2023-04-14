@@ -1,0 +1,25 @@
+table:
+  name: invoices
+  schema: public
+object_relationships:
+  - name: company
+    using:
+      foreign_key_constraint_on: company_id
+event_triggers:
+  - name: pohui
+    definition:
+      enable_manual: true
+      insert:
+        columns: '*'
+      update:
+        columns:
+          - status
+          - total
+          - company_id
+          - date
+          - id
+    retry_conf:
+      interval_sec: 10
+      num_retries: 0
+      timeout_sec: 60
+    webhook: https://rotten-dolphin-66.hooks.n8n.cloud/webhook-test/dcddbf9a-fd85-42f3-9575-8fc039f2bed2

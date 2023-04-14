@@ -1,5 +1,6 @@
 version: 3
-endpoint: http://localhost:8080
+endpoint: https://fun-eagle-91.hasura.app
+admin_secret: ZqHfeRI7whLdSZe7oC0Ew5BCIoYUyzr584HEWx07hQfAk2RV8X6X5jDuIxnhS2ZK
 metadata_directory: metadata
 actions:
   kind: synchronous
