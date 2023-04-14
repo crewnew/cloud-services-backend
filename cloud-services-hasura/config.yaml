@@ -1,0 +1,7 @@
+version: 3
+endpoint: https://decent-raccoon-38.hasura.app
+admin_secret: LS98phm1D0M1DtY02nsbmGu18TVpzibsnvHi60jHoRIv4ALqUXbNpqGQ591rnOvY
+metadata_directory: metadata
+actions:
+  kind: synchronous
+  handler_webhook_baseurl: http://localhost:3000
