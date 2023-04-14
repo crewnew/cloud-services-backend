@@ -1,0 +1,1 @@
+INSERT INTO "public"."invoices"("date", "company_id", "id", "total", "status", "created_at", "updated_at") VALUES (E'2023-04-14', 1, 6, 500, E'han', E'2023-04-14T10:25:57.904992+00:00', E'2023-04-14T10:25:57.904992+00:00');
