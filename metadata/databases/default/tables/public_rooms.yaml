@@ -1,0 +1,18 @@
+table:
+  name: rooms
+  schema: public
+array_relationships:
+  - name: room_companies
+    using:
+      foreign_key_constraint_on:
+        column: room_id
+        table:
+          name: companies_rooms
+          schema: public
+select_permissions:
+  - role: public
+    permission:
+      columns:
+        - id
+        - name
+      filter: {}

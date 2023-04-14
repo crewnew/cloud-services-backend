@@ -1,0 +1,13 @@
+table:
+  name: users
+  schema: public
+object_relationships:
+  - name: company
+    using:
+      manual_configuration:
+        column_mapping:
+          company_id: id
+        insertion_order: null
+        remote_table:
+          name: companies
+          schema: public

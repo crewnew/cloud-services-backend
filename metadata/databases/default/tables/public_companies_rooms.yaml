@@ -1,0 +1,10 @@
+table:
+  name: companies_rooms
+  schema: public
+object_relationships:
+  - name: company
+    using:
+      foreign_key_constraint_on: company_id
+  - name: room
+    using:
+      foreign_key_constraint_on: room_id

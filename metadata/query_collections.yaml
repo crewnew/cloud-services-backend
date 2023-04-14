@@ -1,0 +1,11 @@
+- name: allowed-queries
+  definition:
+    queries:
+      - name: GET - Rooms
+        query: |
+          query GetRooms {
+            rooms {
+              id
+              name
+            }
+          }

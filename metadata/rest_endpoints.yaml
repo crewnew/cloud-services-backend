@@ -1,0 +1,9 @@
+- comment: Get REST API for the Rooms table
+  definition:
+    query:
+      collection_name: allowed-queries
+      query_name: GET - Rooms
+  methods:
+    - GET
+  name: GET - Rooms
+  url: rooms

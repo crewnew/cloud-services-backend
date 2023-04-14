@@ -1,0 +1,31 @@
+table:
+  name: invoices
+  schema: public
+object_relationships:
+  - name: company
+    using:
+      manual_configuration:
+        column_mapping:
+          company_id: id
+        insertion_order: null
+        remote_table:
+          name: companies
+          schema: public
+event_triggers:
+  - name: new_invoice
+    definition:
+      enable_manual: true
+      insert:
+        columns: '*'
+      update:
+        columns:
+          - company_id
+          - id
+          - date
+          - total
+          - status
+    retry_conf:
+      interval_sec: 10
+      num_retries: 0
+      timeout_sec: 60
+    webhook: https://om6tsg48h4cyyvxwfz7ff2tq.hooks.n8n.cloud/webhook-test/787f4e89-d7e7-4a99-bb86-a72cd920b688
