@@ -1,0 +1,9 @@
+- comment: Returns the list of all rooms available in the system.
+  definition:
+    query:
+      collection_name: allowed-queries
+      query_name: GetAllRooms
+  methods:
+    - GET
+  name: GetAllRooms
+  url: rooms
