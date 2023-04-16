@@ -91,6 +91,8 @@ If you have a lot of migrations that you want to squash into a single one:
 
 [Squash documentation](https://hasura.io/docs/latest/hasura-cli/commands/hasura_migrate_squash/) and [All CLI commands doc](https://hasura.io/docs/latest/hasura-cli/commands/index/).
 
+Consider squash like a mergeing multiple migrations into one. For example, you do a small change in `users` table and then do few more small chanes so you have multiple small migrations all related to that. Then it would be nice to squash it all together and give it a nice name. Like you commit to Git one sensible amount of work with good naming.
+
 ### Issues to solve problems you have generated
 
 Created some mess? Want to delete the crap you generated but getting errors? Stuck? Then try to delete also the test data first. Or if production export it to re-import later. Then delete under "Relationships" the relationships. Also do the same from the related tables. Then  delete the foreign keys. If it didn't fix the issue then you can also delete the table. If deletion of things fails then from the top right menu click "Settings" and open `/console/settings/metadata-actions` and https://i.imgur.com/EQwutFJ.png
