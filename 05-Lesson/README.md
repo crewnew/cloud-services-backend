@@ -53,7 +53,7 @@ You can use Docker and follow these [instructions](https://docs.directus.io/self
 
 If you create tables/relations from Hasura and then track them in Directus then you are very likely end up Directus crashing at one moment. It is pretty terrible pice of software in that terms - it is just damn brilliant to create any admin panels damn quick. Many people I have moved from spreadsheets to Directus and they love it. So, if we create tables/relations in Directus and then track them in Hasura, then we're much more safe and also make sure admin panel looks as nice and with good UX as we can get. Process to create and possibly delete things (because you make stupid tables, columns, relationships sometimes that need to be deleted):
 
-- Create/edit/delete in Directus
+- Create/edit/delete in Directus and make it look nice
 - Export your changes `npx directus schema snapshot ./snapshot.yaml` and commit
 - Track changes in Hasura if new table/relation was created and refresh metadata from console if column changes (localhost console, of course)
 - `hasura migrate create <migration_name> --from-server` and commit
