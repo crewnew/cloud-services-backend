@@ -62,6 +62,7 @@ If you create tables/relations from Hasura and then track them in Directus then 
 
 4.1. Create roles/permissions
 4.2. Create queries for FE for multilingual homepage, contact us, categories, category products, single products
+4.3. Create events/actions: new user email, new order SMS/email/discord, new invoice PDF, new invoice to accounting, external products, sync products, payment gateway, order delivery, email customer when shipped, etc. etc.
 
 ### Create in FE category page
 
