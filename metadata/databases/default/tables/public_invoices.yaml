@@ -5,3 +5,42 @@ object_relationships:
   - name: company
     using:
       foreign_key_constraint_on: company_id
+insert_permissions:
+  - role: employee
+    permission:
+      check: {}
+      columns:
+        - date
+        - company_id
+        - id
+        - total
+        - status
+        - created_at
+        - updated_at
+select_permissions:
+  - role: public
+    permission:
+      columns:
+        - company_id
+        - created_at
+        - date
+        - id
+        - status
+      filter:
+        company:
+          users:
+            id:
+              _eq: X-Hasura-User-Id
+  - role: user
+    permission:
+      columns:
+        - date
+        - company_id
+        - id
+        - total
+        - status
+        - created_at
+        - updated_at
+      filter:
+        id:
+          _eq: X-Hasura-User-Id

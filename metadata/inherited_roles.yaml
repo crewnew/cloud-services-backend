@@ -1,1 +1,4 @@
-[]
+- role_name: employee
+  role_set:
+    - user
+    - public
