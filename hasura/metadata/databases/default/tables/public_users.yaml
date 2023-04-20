@@ -11,3 +11,9 @@ object_relationships:
         remote_table:
           name: companies
           schema: public
+computed_fields:
+  - name: full_name
+    definition:
+      function:
+        name: user_full_name
+        schema: public

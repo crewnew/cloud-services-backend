@@ -1,0 +1,156 @@
+@import './fonts.css';
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+body {
+  font-family: 'Euclid Circular A', ui-sans-serif, system-ui, -apple-system,
+    BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans',
+    sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
+    'Noto Color Emoji';
+  font-size: 3.8647342995169085vw;
+
+  transition: color 0.5s, background-color 0.5s;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  @apply bg-white text-black-100 dark:(bg-black-100 text-white);
+}
+
+#app {
+  /*max-width: 544px;*/
+}
+
+header {
+  @apply bg-white dark:bg-black-100;
+}
+
+main {
+  padding: 0 1em;
+}
+
+footer {
+  @apply bg-white dark:bg-black-100;
+}
+
+.container-blur {
+  @apply absolute top-0 left-0 -z-1 w-full h-full bg-white bg-opacity-90
+  backdrop-filter backdrop-blur-30 backdrop-brightness-100;
+}
+
+#fixed-header {
+  /*transform: translateY(-1em);*/
+  opacity: 0;
+  transition: opacity 0.15s ease-in-out;
+}
+
+h1 {
+  @apply text-2xl font-light leading-normal tracking-normal;
+}
+
+h2 {
+  @apply text-xl font-medium leading-normal tracking-normal;
+}
+
+h3 {
+  @apply text-lg font-medium leading-normal tracking-normal;
+}
+
+h4 {
+  @apply text-base font-medium leading-normal tracking-normal;
+}
+
+p {
+  @apply text-sm font-regular leading-normal tracking-normal;
+}
+
+small {
+  @apply text-xs font-regular leading-normal tracking-normal;
+}
+
+/* Min Font Size */
+@media screen and (max-width: 360px) {
+  h1 {
+    font-size: 36.52173913043479px;
+  }
+
+  h2 {
+    font-size: 31.30434782608696px;
+  }
+
+  h3 {
+    font-size: 20.869565217391305px;
+  }
+
+  h4 {
+    font-size: 17.39130434782609px;
+  }
+
+  p {
+    font-size: 15.65217391304348px;
+  }
+
+  small {
+    font-size: 13.913043478260871px;
+  }
+}
+
+/* Max Font Size */
+@media screen and (min-width: 544px) {
+  body {
+    font-size: 21.024154589371985px;
+  }
+}
+
+/* toggle button */
+.toggle .knobs {
+  @apply rounded-full h-full w-1.125em relative;
+}
+
+.toggle .knobs::before {
+  content: '';
+  position: absolute;
+  left: 2px;
+  top: 2px;
+  background-color: white;
+  z-index: 1;
+  transition: 0.8s ease all, left 0.3s cubic-bezier(0.2, 1.35, 0.2, 1.35);
+  height: 1.375em;
+  width: 1.375em;
+  @apply rounded-full;
+}
+
+.toggle .checkbox:active ~ .knobs::before {
+  transform: scaleX(0.5);
+  /*transform: scaleX(0.2);*/
+}
+
+.toggle .checkbox:checked ~ .knobs::before {
+  /*right: 2px;*/
+  left: calc(100% - 2px);
+}
+
+.toggle .layer {
+  @apply absolute w-full h-full rounded-full;
+}
+
+.toggle .layer::before {
+  content: '';
+  position: absolute;
+  z-index: 0;
+  @apply absolute w-full h-full rounded-full bg-black-25;
+  transition: all ease 0.3s;
+}
+
+.toggle .checkbox:checked ~ .layer::before {
+  @apply bg-green-100;
+}
+
+input {
+  all: unset;
+}

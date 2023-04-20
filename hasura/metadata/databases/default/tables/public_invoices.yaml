@@ -11,6 +11,19 @@ object_relationships:
         remote_table:
           name: companies
           schema: public
+select_permissions:
+  - role: customer
+    permission:
+      columns:
+        - date
+        - id
+        - status
+        - total
+      filter:
+        company:
+          users:
+            id:
+              _eq: X-Hasura-User-Id
 event_triggers:
   - name: new_invoice
     definition:
