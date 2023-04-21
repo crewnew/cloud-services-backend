@@ -1,0 +1,14 @@
+{
+    "name": "live-chat",
+    "version": "1.0.0",
+    "dependencies": {
+        "graphql-request": "^3.6.1",
+        "subscriptions-transport-ws": "^0.10.0"
+    },
+    "devDependencies": {
+        "parcel-bundler": "^1.12.5"
+    },
+    "scripts": {
+        "start": "parcel index.html"
+    }
+}
