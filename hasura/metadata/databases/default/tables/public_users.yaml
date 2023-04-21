@@ -11,9 +11,42 @@ object_relationships:
         remote_table:
           name: companies
           schema: public
+array_relationships:
+  - name: received_messages
+    using:
+      foreign_key_constraint_on:
+        column: receiver_id
+        table:
+          name: messages
+          schema: public
+  - name: users_messages
+    using:
+      foreign_key_constraint_on:
+        column: sender_id
+        table:
+          name: messages
+          schema: public
 computed_fields:
   - name: full_name
     definition:
       function:
         name: user_full_name
         schema: public
+select_permissions:
+  - role: user
+    permission:
+      columns:
+        - company_id
+        - created_at
+        - email
+        - first_name
+        - id
+        - last_name
+        - role
+        - updated_at
+        - verified
+      computed_fields:
+        - full_name
+      filter:
+        id:
+          _eq: X-Hasura-User-Id

@@ -1,0 +1,7 @@
+table:
+  name: messages
+  schema: public
+object_relationships:
+  - name: messages_user
+    using:
+      foreign_key_constraint_on: sender_id
