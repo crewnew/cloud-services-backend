@@ -1,6 +1,6 @@
 version: 3
-endpoint: https://<your-project-name>.hasura.app
-admin_secret: <your-admin-secret>
+endpoint: https://trucker-shop.hasura.app
+admin_secret: QEYd5K56Au0lCAEO78Ywfi2qqY7JeV8iihk7UZII5NCBwMMgcp20t4pm7d5hoGYz
 metadata_directory: metadata
 actions:
   kind: synchronous
