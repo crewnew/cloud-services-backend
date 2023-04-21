@@ -1,6 +1,6 @@
 version: 3
-endpoint: https://rich-thrush-50.hasura.app
-admin_secret: n65XrVlP0QwkLpdamfWnSkqy2NOwnuEwAlu1qxR2UH1Q541K0eo6jYtrcaxHDfYw
+endpoint: ${HASURA_GRAPHQL_ENDPOINT}
+admin_secret: ${HASURA_GRAPHQL_ADMIN_SECRET}
 metadata_directory: metadata
 actions:
   kind: synchronous
