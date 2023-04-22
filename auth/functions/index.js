@@ -8,45 +8,32 @@ admin.initializeApp();
 const HASURA_GRAPHQL_ENDPOINT = 'https://national-vulture-91.hasura.app/v1/graphql';
 const HASURA_ADMIN_SECRET = 'VuPrGyLPVuNTSmmd2fyPDoeV2V0kmttElE0ANIGtmstIvd28xYgSPR6DKgafWS4J';
 
-exports.processSignUp = functions.auth.user().onCreate(async (user) => { // Set custom claims with the "client" role
+exports.processSignUp = functions.auth.user().onCreate(async (user) => {
+    const insertUserQuery = `
+    mutation insertUser($uid: String!, $email: String!, $role: String!, $created_at: timestamptz!) {
+        insert_users_one(object: {uid: $uid, email: $email, role: $role, created_at: $created_at}) {
+          id
+        }
+      }
+      
+`;
+    // Set custom claims with the "client" role
     await admin.auth().setCustomUserClaims(user.uid, {
         'https://hasura.io/jwt/claims': {
-            'x-hasura-default-role': 'customer',
-            'x-hasura-allowed-roles': ['customer']
+            'x-hasura-default-role': 'client',
+            'x-hasura-allowed-roles': ['client']
         }
     });
-});
-
-exports.insertUser = functions.https.onCall(async (data, context) => {
-
-    const insertUserQuery = `
-        mutation insertUser($uid: String!, $email: String!, $first_name: String, $last_name: String,$role: String!) {
-            insert_users_one(object: {uid: $uid, email: $email, first_name: $first_name, last_name: $last_name, role: $role}) {
-                uid
-            }
-        }
-    `;
-
     // Insert user information into the Hasura users table
     const userData = {
-        uid: data.uid,
-        email: data.email,
-        first_name: data.first_name,
-        last_name: data.last_name,
+        uid: user.uid,
+        email: user.email,
         role: 'client',
+        created_at: new Date().toISOString()
     };
-
     await request(HASURA_GRAPHQL_ENDPOINT, insertUserQuery, userData, {
         'x-hasura-admin-secret': HASURA_ADMIN_SECRET
-    }).then((data) => {
-        console.log(data);
-    }).catch((error) => {
-        console.log(error);
     });
-
-    return {
-        message: 'User inserted successfully.'
-    };
 });
 
 exports.getAllUsers = functions.https.onCall(async () => {
@@ -55,10 +42,10 @@ exports.getAllUsers = functions.https.onCall(async () => {
     const getUsersQuery = `
         query getUsers {
             users {
+                id
                 uid
                 email
-                first_name
-                last_name
+                display_name
                 role
             }
         }
@@ -78,17 +65,17 @@ exports.getAllUsers = functions.https.onCall(async () => {
 exports.deleteUser = functions.https.onCall(async (data) => {
 
     // Verify that the user exists in Firebase Authentication
-    const uid = data;
+    const id = data;
 
     // Delete user from the Hasura users table
     const deleteUserQuery = `
-        mutation deleteUser($uid: String!) {
-            delete_users_by_pk(uid: $uid) {
-                uid
+        mutation deleteUser($id: Int!) {
+            delete_users_by_pk(id: $id) {
+                id
             }
         }
     `;
-    await request(HASURA_GRAPHQL_ENDPOINT, deleteUserQuery, { uid: uid }, {
+    await request(HASURA_GRAPHQL_ENDPOINT, deleteUserQuery, { id: id }, {
         'x-hasura-admin-secret': HASURA_ADMIN_SECRET
     }).then((data) => {
         console.log(data);
@@ -103,13 +90,13 @@ exports.deleteUser = functions.https.onCall(async (data) => {
 exports.getUserRole = functions.https.onCall(async (data) => {
     const getUserRoleQuery = `
         query getUserRole($uid: String!) {
-            users_by_pk(uid: $uid) {
+            users_by_pk(id: $id) {
                 role
             }
         }
     `;
 
-    const userRole = await request(HASURA_GRAPHQL_ENDPOINT, getUserRoleQuery, { uid: data.uid }, {
+    const userRole = await request(HASURA_GRAPHQL_ENDPOINT, getUserRoleQuery, { id: data.id }, {
         'x-hasura-admin-secret': HASURA_ADMIN_SECRET
     }).then((data) => {
         return data.users_by_pk.role;
@@ -118,30 +105,6 @@ exports.getUserRole = functions.https.onCall(async (data) => {
     });
 
     return userRole;
-});
-
-exports.makeMeAdmin = functions.https.onCall(async (data) => {
-
-    const uid = data.uid;
-
-    // Update user role in the Hasura users table
-    const updateUserRoleQuery = `
-        mutation updateUserRole($uid: String!, $role: String!) {
-            update_users_by_pk(pk_columns: {uid: $uid}, _set: {role: $role}) {
-                uid
-            }
-        }
-    `;
-
-    const updatedUserRole = await request(HASURA_GRAPHQL_ENDPOINT, updateUserRoleQuery, { uid: uid, role: 'admin' }, {
-        'x-hasura-admin-secret': HASURA_ADMIN_SECRET
-    }).then((data) => {
-        return data.update_users_by_pk;
-    }).catch((error) => {
-        console.log(error);
-    });
-
-    return updatedUserRole;
 });
 
 exports.updateUser = functions.https.onCall(async (data) => {
@@ -197,20 +160,20 @@ exports.addFakeUser = functions.https.onCall(async () => {
     // Generate fake user data
     const email = faker.internet.email();
     const password = faker.internet.password();
-    const firstName = faker.name.first_name();
-    const lastName = faker.name.last_name();
+    const displayName = 'fake user';
     const role = 'client';
 
     // Create user in Firebase Authentication table
     const userRecord = await admin.auth().createUser({
         email: email,
         password: password,
+        displayName: displayName,
     });
 
     // Add user to Hasura table
     const addUserQuery = `
-      mutation addUser($uid: String!, $email: String!, $firstName: String, $lastName: String, $role: String) {
-        insert_users(objects: {uid: $uid, email: $email, first_name: $firstName, last_name: $lastName, role: $role}) {
+      mutation addUser($uid: String!, $email: String!, $display_name: String, $role: String) {
+        insert_users(objects: {uid: $uid, email: $email, display_name: $display_name, role: $role}) {
           affected_rows
         }
       }
@@ -219,8 +182,7 @@ exports.addFakeUser = functions.https.onCall(async () => {
     const variables = {
         uid: userRecord.uid,
         email: email,
-        firstName: firstName,
-        lastName: lastName,
+        displayName: displayName,
         role: role,
     };
 

@@ -24,10 +24,10 @@ const AdminPanel = () => {
     const [form] = Form.useForm();
 
 
-    const getUsers = async (userId) => {
+    const getUsers = async () => {
         // Call getAllUsers function from Firebase Functions
         const usersList = firebase.functions().httpsCallable('getAllUsers');
-        const result = await usersList(userId);
+        const result = await usersList();
         console.log(result.data);
         setUsers(result.data); // update state with the returned array of users
     };
@@ -48,9 +48,9 @@ const AdminPanel = () => {
     };
 
     const handleDeleteUser = async (user) => {
-        const uid = user.uid;
+        const id = user.id;
         const deleteUser = firebase.functions().httpsCallable('deleteUser');
-        const result = await deleteUser(uid);
+        const result = await deleteUser(id);
         console.log(result.data);
         window.location.reload();
     };
@@ -60,9 +60,8 @@ const AdminPanel = () => {
         try {
             const values = await form.validateFields();
             const updatedUser = {
+                displayName: `${values.first_name} ${values.last_name}`,
                 ...editingUser,
-                firstName: values.first_name,
-                lastName: values.last_name,
                 role: values.role,
             };
             console.log("up", values);
@@ -83,12 +82,32 @@ const AdminPanel = () => {
         form.resetFields();
     };
 
+    const addFakeUser = async () => {
+        const fakeUser = firebase.functions().httpsCallable('addFakeUser');
+        const result = await fakeUser();
+        console.log(result.data);
+        window.location.reload();
+    };
+
+    const data = users.map((user, index) => ({
+        id: user.id,
+        uid: user.uid,
+        key: index,
+        displayName: user.display_name,
+        email: user.email,
+        role: user.role,
+    }));
+
     const columns = [
         {
-            key: 'name',
-            title: 'Name',
-            dataIndex: 'name',
-            render: (text, record) => `${record.first_name} ${record.last_name}`,
+            key: 'id',
+            title: 'ID',
+            dataIndex: 'id',
+        },
+        {
+            key: 'displayName',
+            title: 'Display Name',
+            dataIndex: 'displayName',
         },
         {
             key: 'email',
@@ -112,23 +131,6 @@ const AdminPanel = () => {
             ),
         },
     ];
-
-    const addFakeUser = async () => {
-        const fakeUser = firebase.functions().httpsCallable('addFakeUser');
-        const result = await fakeUser();
-        console.log(result.data);
-        window.location.reload();
-    };
-
-    const data = users.map((user, index) => ({
-        uid: user.uid,
-        key: index,
-        first_name: user.first_name,
-        last_name: user.last_name,
-        email: user.email,
-        role: user.role,
-    }));
-
 
     return (
         <div>

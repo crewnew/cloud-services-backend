@@ -17,14 +17,14 @@ const Signup = () => {
                 const user = userCredential.user;
 
                 // Call a Cloud Function to update the user's first_name and last_name
-                const insertUser = insertUserFunction;
-                const result = await insertUser({
-                    uid: user.uid,
-                    email: values.email,
-                    first_name: values.first_name,
-                    last_name: values.last_name,
-                });
-                window.location.href = '/';
+                // const insertUser = insertUserFunction;
+                // const result = await insertUser({
+                //     uid: user.uid,
+                //     email: values.email,
+                //     first_name: values.first_name,
+                //     last_name: values.last_name,
+                // });
+                // window.location.href = '/';
             })
             .catch((error) => {
                 const errorCode = error.code;
