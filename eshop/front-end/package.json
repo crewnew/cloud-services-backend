@@ -1,0 +1,18 @@
+{
+  "name": "front-end",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@apollo/client": "^3.7.13",
+    "apollo-boost": "^0.4.9",
+    "graphql": "^16.6.0",
+    "next": "^13.3.1",
+    "react-apollo": "^3.1.5"
+  }
+}
