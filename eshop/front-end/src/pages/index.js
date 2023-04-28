@@ -1,18 +1,22 @@
-import { useQuery } from 'react-apollo';
-import { ALL_PRODUCTS_QUERY } from '../../schema/schema.graphql';
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
+import { fetchProducts } from '../fetch/fetchProducts';
 
 export default function Home() {
-  const { error, data, loading } = useQuery(ALL_PRODUCTS_QUERY);
+  const [products, setProducts] = useState([]);
   const [isLoading, setLoading] = useState(true);
-  const router = useRouter();
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    if (!loading) {
-      setLoading(false);
-    }
-  }, [loading]);
+    fetchProducts()
+      .then((data) => {
+        setProducts(data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        setError(error);
+        setLoading(false);
+      });
+  }, []);
 
   const goToProduct = (id) => {
     router.push(`/product/${id}`);
@@ -20,13 +24,13 @@ export default function Home() {
 
   if (isLoading) return <div><p>Loading...</p></div>;
   if (error) return <p>Error: {error.message}</p>;
-  if (!data) return <div><p>No data found</p></div>;
+  if (products.length === 0) return <div><p>No data found</p></div>;
 
   return (
     <div>
       <h1>Products</h1>
       <ul>
-        {data.prouct.map((product) => (
+        {products.map((product) => (
           <li key={product.id} onClick={() => goToProduct(product.id)}>
             {product.name} - {product.price}
           </li>
