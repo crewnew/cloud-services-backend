@@ -9,3 +9,14 @@ export const ALL_PRODUCTS_QUERY = gql`
     }
   }
 `;
+
+export const PRODUCT_BY_ID_QUERY = gql`
+  query ProductById($id: Int!) {
+    prouct_by_pk(id: $id) {
+      id
+      name
+      description
+      price
+  }
+}
+`;
