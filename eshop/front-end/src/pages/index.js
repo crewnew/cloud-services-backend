@@ -1,8 +1,5 @@
 import { useEffect, useState } from 'react';
-import { getProducts } from '../fetch/getProducts';
-import { getCart } from '../fetch/getCart.js';
-import { addProductToCart } from '../fetch/addProductToCart';
-import { createNewCart } from '../fetch/createNewCart';
+import { getProducts, getCart, addProductToCart, createNewCart } from '../fetch/index.js';
 import { useRouter } from 'next/router';
 import { List, Card, Skeleton, Layout, Menu, Badge, Button, Popover } from 'antd';
 import { ShoppingCartOutlined, UserOutlined } from '@ant-design/icons';
@@ -67,7 +64,7 @@ export default function Home() {
   };
 
   const handleGoToCart = () => {
-    router.push(`/cart/1`);
+    router.push(`/cart`);
   };
 
   const addToCart = (productId) => {
@@ -80,8 +77,19 @@ export default function Home() {
           console.error(error);
         });
     } else {
-      createNewCart(productId, 1);
-      getCart();
+      createNewCart(1)
+        .then((data) => {
+          addProductToCart(data, productId)
+            .then((data) => {
+              setCart(data);
+            })
+            .catch((error) => {
+              console.error(error);
+            });
+        })
+        .catch((error) => {
+          console.error(error);
+        });
     }
   };
 
@@ -109,23 +117,26 @@ export default function Home() {
           </Menu.Item>
           <Menu.Item key="5" style={{ alignSelf: 'center', marginLeft: 'auto' }}>
             <Popover
-              visible={isCartVisible}
-              onVisibleChange={toggleCart}
+              open={isCartVisible}
+              onOpenChange={toggleCart}
               overlayStyle={{ width: '200px' }}
               content={
-                cart && cart.order_proucts ? (
-                  <List
-                    itemLayout="horizontal"
-                    dataSource={cartProducts}
-                    renderItem={(item) => (
-                      <List.Item>
-                        <List.Item.Meta title={item.name} description={`Quantity: ${item.quantity} - Price: ${item.price}`} />
-                      </List.Item>
-                    )}
-                  />
-                ) : (
-                  <p>No items in cart</p>
-                )
+                <div>
+                  {cart && cart.order_proucts ? (
+                    <List
+                      itemLayout="horizontal"
+                      dataSource={cartProducts}
+                      renderItem={(item) => (
+                        <List.Item>
+                          <List.Item.Meta title={item.name} description={`Quantity: ${item.quantity} - Price: ${item.price}`} />
+                        </List.Item>
+                      )}
+                    />
+                  ) : (
+                    <p>No items in cart</p>
+                  )}
+                  <p> Cart Total: ${cartTotal}</p>
+                </div>
               }
             >
               <Badge count={cart && cart.order_proucts ? cart.order_proucts.length : 0}>

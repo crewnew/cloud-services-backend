@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
 import { Card, Skeleton, Button } from 'antd';
-import { getProductById } from '../../fetch/getProductById';
+import { getProductById } from '../../fetch/index.js';
 
 export default function ProductById() {
   const router = useRouter();
