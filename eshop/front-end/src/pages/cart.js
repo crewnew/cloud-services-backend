@@ -54,6 +54,10 @@ function CartDetail() {
         });
     };
 
+    const cartTotal = cartProducts.reduce((acc, product) => {
+        return acc + product.price * product.quantity;
+    }, 0);
+
     return (
         <div>
             <h1>Cart</h1>
@@ -82,6 +86,10 @@ function CartDetail() {
             ) : (
                 <p>Loading cart data...</p>
             )}
+
+
+
+            <p> Cart Total: ${cartTotal}</p>
 
             {cart && cart.order_proucts.length > 0 && (
                 <Button
