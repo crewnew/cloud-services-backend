@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { List, Button } from 'antd';
 import { getCart } from '../fetch/index.js';
 import { deleteProductFromCart } from '../fetch/index.js';
+import Navbar from '../components/navbar';
 
 function CartDetail() {
     const router = useRouter();
@@ -60,6 +61,7 @@ function CartDetail() {
 
     return (
         <div>
+            <Navbar />
             <h1>Cart</h1>
             {cart ? (
                 <List
