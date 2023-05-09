@@ -3,6 +3,8 @@ import { getProducts, getCart, addProductToCart, createNewCart } from '../fetch/
 import { useRouter } from 'next/router';
 import { List, Card, Skeleton, Layout, Menu, Badge, Button, Popover } from 'antd';
 import { ShoppingCartOutlined, UserOutlined } from '@ant-design/icons';
+import Link from 'next/link';
+
 
 const { Header, Footer } = Layout;
 
@@ -113,6 +115,10 @@ export default function Home() {
           <Menu.Item key="1">Home</Menu.Item>
           <Menu.Item key="2">Products</Menu.Item>
           <Menu.Item key="3">About</Menu.Item>
+          <Link href="/login">
+            <span>Login/Register</span>
+          </Link>
+
           <Menu.Item key="4" style={{ alignSelf: 'center' }}>
           </Menu.Item>
           <Menu.Item key="5" style={{ alignSelf: 'center', marginLeft: 'auto' }}>
