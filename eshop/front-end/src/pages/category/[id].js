@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { Card, Skeleton } from 'antd';
 import { getProductsByCategory } from '../../fetch/index.js';
 import { useRouter } from 'next/router';
+import { Button} from 'antd';
+import { createNewCart } from '../../fetch/index.js';
 
 export default function ProductsByCategory({ }) {
 
@@ -10,6 +12,7 @@ export default function ProductsByCategory({ }) {
     const [error, setError] = useState(null);
     const router = useRouter();
     const { id } = router.query;
+    const [cart, setCart] = useState(null);
 
     useEffect(() => {
         if (id) {
@@ -25,6 +28,32 @@ export default function ProductsByCategory({ }) {
         }
     }, [id]);
 
+    const addToCart = (productId) => {
+        if (cart) {
+          addProductToCart(cart.id, productId)
+            .then((data) => {
+              setCart(data);
+            })
+            .catch((error) => {
+              console.error(error);
+            });
+        } else {
+          createNewCart(1)
+            .then((data) => {
+              addProductToCart(data, productId)
+                .then((data) => {
+                  setCart(data);
+                })
+                .catch((error) => {
+                  console.error(error);
+                });
+            })
+            .catch((error) => {
+              console.error(error);
+            });
+        }
+      };
+    
     // products have many products, we need to sort them by category id which is the same as the id in the url
     // If product parent_id is null then show it first, otherwise show it after the products with the same parent_id
 
@@ -56,6 +85,10 @@ export default function ProductsByCategory({ }) {
                         description={`Category: ${product.category.name}`}
                         style={{ marginBottom: '16px' }}
                     />
+                        <Button onClick={(event) => {
+                            event.stopPropagation();
+                            addToCart(product.id);
+                          }}>Add to cart</Button>
                     <Card.Meta
                         description={`Description: ${product.description}`}
                         style={{ marginBottom: '16px' }}
