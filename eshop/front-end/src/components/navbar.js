@@ -1,30 +1,60 @@
 import Link from 'next/link';
 import { Menu, Layout } from 'antd';
 import { ShoppingCartOutlined, UserOutlined } from '@ant-design/icons';
-import { useState } from 'react';
-import { Badge, Button, List, Popover } from 'antd';
+import { useState, useEffect } from 'react';
+import { Badge, Button, List, Popover, Tooltip, Modal } from 'antd';
 import { cart, cartTotal } from '../pages/index.js';
-
+import { onAuthStateChanged } from "firebase/auth";
+import { getAuth } from 'firebase/auth';
+import app from '../pages/firebaseConfig';
+import { useRouter } from 'next/router';
 
 const { Header } = Layout;
 
 const Navbar = () => {
+  const [logoutModalVisible, setLogoutModalVisible] = useState(false);
   const [selectedKey, setSelectedKey] = useState('home');
   const [isCartVisible, setCartVisible] = useState(false);
+  const [user, setUser] = useState(null);
+  const router = useRouter();
+  const auth = getAuth(app);
 
   const toggleCart = () => {
     setCartVisible(!isCartVisible);
   };
 
+  const handleLogoutClick = () => {
+    Modal.confirm({
+      title: 'Are you sure you want to logout?',
+      okText: 'Yes',
+      cancelText: 'No',
+      onOk: () => {
+        // Firebase logout
+        auth.signOut();
+        router.push('/');
+      },
+    });
+  };
+
   let cartProducts = cart && cart.order_proucts ? cart.order_proucts : [];
+
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUser(user);
+      } else {
+        setUser(null);
+      }
+    });
+  }, []);
 
   return (
     <Header>
       <Menu theme="dark" mode="horizontal" selectedKeys={[selectedKey]} style={{ display: 'flex', justifyContent: 'space-between' }}>
         <Menu.Item key="logo">
-        <Link href="/">
-          <span>Back to Homepage</span>
-        </Link>
+          <Link href="/">
+            <span>Back to Homepage</span>
+          </Link>
         </Menu.Item>
         <Menu.Item key="home">
           <Link href="/">
@@ -66,17 +96,29 @@ const Navbar = () => {
             }
           >
             <Badge count={cartProducts.length}>
-              <Button shape="circle" icon={<ShoppingCartOutlined />}  />
+              <Button shape="circle" icon={<ShoppingCartOutlined />} />
             </Badge>
           </Popover>
         </Menu.Item>
-        <Menu.Item key="login" style={{ alignSelf: 'center' }}>
-          <Link href="/login">
-            <span>
-              <Button icon={<UserOutlined />} style={{ marginLeft: 10 }}>Login / Register</Button>
-            </span>
-          </Link>
-        </Menu.Item>
+        {user ? (
+          <Menu.Item key="profile" style={{ alignSelf: "center" }}>
+            <Tooltip title="Logout?">
+              <Button onClick={handleLogoutClick}>
+                {user.email}
+              </Button>
+            </Tooltip>
+          </Menu.Item>
+        ) : (
+          <Menu.Item key="login" style={{ alignSelf: "center" }}>
+            <Link href="/login">
+              <span>
+                <Button icon={<UserOutlined />} style={{ marginLeft: 10 }}>
+                  Login / Register
+                </Button>
+              </span>
+            </Link>
+          </Menu.Item>
+        )}
       </Menu>
     </Header>
   );

@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
-import { getProducts, getCart, addProductToCart, createNewCart } from '../fetch/index.js';
+import { getProducts, getCart, addProductToCart, createNewCart, getAllCategories } from '../fetch/index.js';
 import { useRouter } from 'next/router';
 import { List, Card, Skeleton, Layout, Menu, Badge, Button, Popover } from 'antd';
 import { ShoppingCartOutlined, UserOutlined } from '@ant-design/icons';
+import CategorySelect from '../components/categorySelect';
 import Link from 'next/link';
+import Navbar from '@/components/navbar.js';
 
 
 const { Header, Footer } = Layout;
@@ -14,7 +16,9 @@ export default function Home() {
   const [isLoading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [cart, setCart] = useState(null);
+  const [categories, setCategories] = useState([]);
   const router = useRouter();
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     getProducts()
@@ -38,6 +42,10 @@ export default function Home() {
         console.error(error);
       });
   }, [cart]);
+
+  useEffect(() => {
+    categoryMap();
+  }, []);
 
   const cartProducts = cart && cart.order_proucts ? cart.order_proucts.reduce((acc, orderProduct) => {
     const existingProduct = acc.find((product) => product.id === orderProduct.prouct.id);
@@ -95,6 +103,35 @@ export default function Home() {
     }
   };
 
+  function categoryMap() {
+    // Get the categories from the API
+    getAllCategories()
+      .then((data) => {
+        const categoryMap = {};
+        data.forEach((category) => {
+          if (!category.parent_id) {
+            categoryMap[category.id] = { name: category.name, subcategories: {} };
+          } else {
+            const parentCategory = categoryMap[category.parent_id];
+            parentCategory.subcategories[category.id] = { name: category.name };
+          }
+        });
+        console.log(categoryMap);
+        setCategories(categoryMap);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
+
+  const handleCategoryChange = (value) => {
+    if (value) {
+      router.push(`/category/${value}`);
+    } else {
+      router.push(`/`);
+    }
+  };
+
   if (isLoading) {
     return (
       <div>
@@ -110,51 +147,8 @@ export default function Home() {
 
   return (
     <Layout>
-      <Header>
-        <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['1']} style={{ display: 'flex', justifyContent: 'space-between' }}>
-          <Menu.Item key="1">Home</Menu.Item>
-          <Menu.Item key="2">Products</Menu.Item>
-          <Menu.Item key="3">About</Menu.Item>
-          <Link href="/login">
-            <span>Login/Register</span>
-          </Link>
-
-          <Menu.Item key="4" style={{ alignSelf: 'center' }}>
-          </Menu.Item>
-          <Menu.Item key="5" style={{ alignSelf: 'center', marginLeft: 'auto' }}>
-            <Popover
-              open={isCartVisible}
-              onOpenChange={toggleCart}
-              overlayStyle={{ width: '200px' }}
-              content={
-                <div>
-                  {cart && cart.order_proucts ? (
-                    <List
-                      itemLayout="horizontal"
-                      dataSource={cartProducts}
-                      renderItem={(item) => (
-                        <List.Item>
-                          <List.Item.Meta title={item.name} description={`Quantity: ${item.quantity} - Price: ${item.price}`} />
-                        </List.Item>
-                      )}
-                    />
-                  ) : (
-                    <p>No items in cart</p>
-                  )}
-                  <p> Cart Total: ${cartTotal}</p>
-                </div>
-              }
-            >
-              <Badge count={cart && cart.order_proucts ? cart.order_proucts.length : 0}>
-                <Button shape="circle" icon={<ShoppingCartOutlined />} onClick={handleGoToCart} />
-              </Badge>
-            </Popover>
-
-            <Button icon={<UserOutlined />} style={{ marginLeft: 10 }}>Login / Register</Button>
-          </Menu.Item>
-
-        </Menu>
-      </Header >
+      <Navbar />
+      <CategorySelect categories={categories} onChange={handleCategoryChange} />
       <div>
         <h1>Products</h1>
         <List
