@@ -28,8 +28,6 @@ function Checkout() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log('Delivery method:', deliveryMethod);
-        console.log('Payment method:', paymentMethod);
         // TODO: Implement submission of order data
     };
 
@@ -39,8 +37,6 @@ function Checkout() {
         message.success('Your order has been successfully placed');
         router.push('/');
     };
-
-    console.log('cart', cart);
 
     return (
         <div>

@@ -1,24 +1,24 @@
 import { useEffect, useState } from 'react';
 import { getProducts, getCart, addProductToCart, createNewCart, getAllCategories } from '../fetch/index.js';
 import { useRouter } from 'next/router';
-import { List, Card, Skeleton, Layout, Menu, Badge, Button, Popover } from 'antd';
-import { ShoppingCartOutlined, UserOutlined } from '@ant-design/icons';
+import { List, Card, Skeleton, Layout, Button } from 'antd';
 import CategorySelect from '../components/categorySelect';
-import Link from 'next/link';
 import Navbar from '@/components/navbar.js';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import app from './firebaseConfig';
 
 
-const { Header, Footer } = Layout;
+const { Footer } = Layout;
 
 export default function Home() {
-  const [isCartVisible, setCartVisible] = useState(false);
   const [products, setProducts] = useState([]);
   const [isLoading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [cart, setCart] = useState(null);
   const [categories, setCategories] = useState([]);
-  const router = useRouter();
   const [user, setUser] = useState(null);
+  const router = useRouter();
+  const auth = getAuth(app);
 
   useEffect(() => {
     getProducts()
@@ -32,70 +32,51 @@ export default function Home() {
       });
   }, []);
 
-  // If get cart have new data, update cart state
-  useEffect(() => {
-    getCart()
-      .then((data) => {
-        setCart(data);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }, [cart]);
-
   useEffect(() => {
     categoryMap();
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUser(user);
+        getCart(user.uid)
+          .then((data) => {
+            setCart(data);
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+      } else {
+        setUser(null);
+      }
+    });
   }, []);
-
-  const cartProducts = cart && cart.order_proucts ? cart.order_proucts.reduce((acc, orderProduct) => {
-    const existingProduct = acc.find((product) => product.id === orderProduct.prouct.id);
-    if (existingProduct) {
-      acc.forEach((product) => {
-        if (product.id === orderProduct.prouct.id) {
-          product.quantity += 1;
-        }
-      });
-    } else {
-      acc.push({ ...orderProduct.prouct, quantity: 1 });
-    }
-    return acc;
-  }, []) : [];
-
-  const cartTotal = cartProducts.reduce((acc, product) => {
-    return acc + product.price * product.quantity;
-  }, 0);
 
   const goToProduct = (id) => {
     router.push(`/product/${id}`);
   };
 
-  const toggleCart = () => {
-    setCartVisible(!isCartVisible);
-  };
-
-  const handleGoToCart = () => {
-    router.push(`/cart`);
+  const productToCart = (cartId, productId) => {
+    addProductToCart(cartId, productId)
+      .then(() => {
+        getCart(user.uid)
+          .then((data) => {
+            setCart(data);
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
 
   const addToCart = (productId) => {
     if (cart) {
-      addProductToCart(cart.id, productId)
-        .then((data) => {
-          setCart(data);
-        })
-        .catch((error) => {
-          console.error(error);
-        });
+      productToCart(cart.id, productId)
     } else {
-      createNewCart(1)
+      createNewCart(user.uid)
         .then((data) => {
-          addProductToCart(data, productId)
-            .then((data) => {
-              setCart(data);
-            })
-            .catch((error) => {
-              console.error(error);
-            });
+          productToCart(data, productId)
         })
         .catch((error) => {
           console.error(error);
@@ -116,7 +97,6 @@ export default function Home() {
             parentCategory.subcategories[category.id] = { name: category.name };
           }
         });
-        console.log(categoryMap);
         setCategories(categoryMap);
       })
       .catch((error) => {
@@ -147,7 +127,7 @@ export default function Home() {
 
   return (
     <Layout>
-      <Navbar />
+      <Navbar cart={cart} />
       <CategorySelect categories={categories} onChange={handleCategoryChange} />
       <div>
         <h1>Products</h1>

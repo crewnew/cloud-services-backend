@@ -59,7 +59,7 @@ export async function addProductToCart(orderId, productId) {
   return result.data.insert_order_prouct_one.order;
 }
 
-export async function createNewCart(userId) {
+export async function createNewCart(firebaseId) {
   const response = await fetch('https://trucker-shop.hasura.app/v1/graphql', {
     method: 'POST',
     headers: {
@@ -68,14 +68,21 @@ export async function createNewCart(userId) {
     },
     body: JSON.stringify({
       query: `
-        mutation MyMutation($userId: Int!) {
-          insert_order_one(object: {status: "cart", user_id: $userId}) {
-            id
+      mutation MyMutation($firebaseId: String!) {
+        insert_order_one(object: {
+          status: "cart", 
+          user: {
+            data: {
+              firebase_id: $firebaseId
+            }
           }
-        }      
-          `,
+        }) {
+          id
+        }
+      }              
+        `,
       variables: {
-        userId: userId,
+        firebaseId: firebaseId,
       },
     }),
   });
@@ -110,29 +117,31 @@ export async function deleteProductFromCart(orderId, productId) {
   return result.data.delete_order_prouct;
 }
 
-export async function getCart() {
-
-
-  const uId = 1;
+export async function getCart(id) {
   const SUBSCRIPTION = gql`
-        subscription MySubscription($uId: Int!) {
-          order(where: { user_id: { _eq: $uId }, status: { _eq: "cart" }}) {
-            id
-            order_proucts {
-              prouct {
-                id
-                name
-                price
-              }
+       subscription MySubscription($firebaseId: String!) {
+        order(
+          where: {
+            user: { firebase_id: { _eq: $firebaseId } }
+            status: { _eq: "cart" }
+          }
+        ) {
+          id
+          order_proucts {
+            prouct {
+              id
+              name
+              price
             }
           }
         }
+      }
       `;
 
   return new Promise((resolve, reject) => {
     const subscription = client.subscribe({
       query: SUBSCRIPTION,
-      variables: { uId },
+      variables: { firebaseId: id },
     });
 
     subscription.subscribe({

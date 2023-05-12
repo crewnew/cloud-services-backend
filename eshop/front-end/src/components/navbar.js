@@ -3,7 +3,6 @@ import { Menu, Layout } from 'antd';
 import { ShoppingCartOutlined, UserOutlined } from '@ant-design/icons';
 import { useState, useEffect } from 'react';
 import { Badge, Button, List, Popover, Tooltip, Modal } from 'antd';
-import { cart, cartTotal } from '../pages/index.js';
 import { onAuthStateChanged } from "firebase/auth";
 import { getAuth } from 'firebase/auth';
 import app from '../pages/firebaseConfig';
@@ -11,8 +10,7 @@ import { useRouter } from 'next/router';
 
 const { Header } = Layout;
 
-const Navbar = () => {
-  const [logoutModalVisible, setLogoutModalVisible] = useState(false);
+const Navbar = ({ cart }) => {
   const [selectedKey, setSelectedKey] = useState('home');
   const [isCartVisible, setCartVisible] = useState(false);
   const [user, setUser] = useState(null);
@@ -21,6 +19,10 @@ const Navbar = () => {
 
   const toggleCart = () => {
     setCartVisible(!isCartVisible);
+  };
+
+  const handleGoToCart = () => {
+    router.push(`/cart`);
   };
 
   const handleLogoutClick = () => {
@@ -36,7 +38,23 @@ const Navbar = () => {
     });
   };
 
-  let cartProducts = cart && cart.order_proucts ? cart.order_proucts : [];
+  const cartProducts = cart && cart.order_proucts ? cart.order_proucts.reduce((acc, orderProduct) => {
+    const existingProduct = acc.find((product) => product.id === orderProduct.prouct.id);
+    if (existingProduct) {
+      acc.forEach((product) => {
+        if (product.id === orderProduct.prouct.id) {
+          product.quantity += 1;
+        }
+      });
+    } else {
+      acc.push({ ...orderProduct.prouct, quantity: 1 });
+    }
+    return acc;
+  }, []) : [];
+
+  const cartTotal = cartProducts.reduce((acc, product) => {
+    return acc + product.price * product.quantity;
+  }, 0);
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
@@ -95,8 +113,8 @@ const Navbar = () => {
               </div>
             }
           >
-            <Badge count={cartProducts.length}>
-              <Button shape="circle" icon={<ShoppingCartOutlined />} />
+            <Badge count={cart && cart.order_proucts ? cart.order_proucts.length : 0}>
+              <Button shape="circle" icon={<ShoppingCartOutlined />} onClick={handleGoToCart} />
             </Badge>
           </Popover>
         </Menu.Item>

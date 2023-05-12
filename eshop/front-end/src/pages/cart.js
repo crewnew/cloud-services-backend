@@ -4,23 +4,33 @@ import { List, Button } from 'antd';
 import { getCart } from '../fetch/index.js';
 import { deleteProductFromCart } from '../fetch/index.js';
 import Navbar from '../components/navbar';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import app from './firebaseConfig';
 
 function CartDetail() {
     const router = useRouter();
     const [cart, setCart] = useState(null);
+    const [user, setUser] = useState(null);
+    const auth = getAuth(app);
 
     useEffect(() => {
-        getCart(1)
-            .then((data) => {
-                setCart(data);
-            })
-            .catch((error) => {
-                console.error(error);
-            });
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                getCart(user.uid)
+                    .then((data) => {
+                        setCart(data);
+                    })
+                    .catch((error) => {
+                        console.error(error);
+                    });
+            } else {
+                setUser(null);
+            }
+        });
     }, []);
 
+
     const handleDelete = async (orderId, productId) => {
-        console.log('delete', orderId, productId);
         await deleteProductFromCart(orderId, productId);
         setCart((prevCart) => {
             const updatedOrderProducts = prevCart.order_proucts.filter(
@@ -61,7 +71,7 @@ function CartDetail() {
 
     return (
         <div>
-            <Navbar />
+            <Navbar cart={cart} />
             <h1>Cart</h1>
             {cart ? (
                 <List
