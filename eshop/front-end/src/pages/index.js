@@ -132,11 +132,12 @@ export default function Home() {
       <div>
         <h1>Products</h1>
         <List
-          grid={{ gutter: 16, column: 4 }}
+          grid={{ gutter: 16, column: 7 }}
           dataSource={products}
           renderItem={(product) => (
             <List.Item>
               <Card hoverable onClick={() => goToProduct(product.id)}>
+                <img src={`http://localhost:8055/assets/${product.image}.JPG`} alt={product.name} width={300} height={300} />
                 <Card.Meta title={product.name} description={`$${product.price}`} />
                 <Button onClick={(event) => {
                   event.stopPropagation();

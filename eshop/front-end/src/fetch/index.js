@@ -171,6 +171,7 @@ export async function getProductById(pId) {
                 name
                 price
                 description
+                image
                 category {
                   name
                   parent_id
@@ -207,6 +208,8 @@ export async function getProductsByCategory(categoryId) {
           id
           name
           price
+          description
+          image
           category {
             name
             parent_id
@@ -237,6 +240,8 @@ export async function getProducts() {
               id
               name
               price
+              description
+              image
               category {
                 name
                 parent_id
