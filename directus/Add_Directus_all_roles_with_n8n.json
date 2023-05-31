@@ -1,0 +1,85 @@
+{
+  "name": "Add Directus roles",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "dca6c5af-0e34-4927-89a8-f60d94e18d34",
+      "name": "On clicking 'execute'",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        620,
+        280
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const role = \"d2eb499a-86ef-43d1-a83e-bd5f9c32b6fa\";\nconst actions = [\n  \"create\",\n  \"read\",\n  \"update\",\n  \"delete\",\n  \"share\"\n];\nconst collections = [\n  \"ai_answers\",\n  \"breeds\"\n];\n\nconst results = [];\n\nfor (const action of actions) {\n  for (const collection of collections) {\n    results.push({\n        json: {\n            role: role,\n            action: action,\n            collection: collection\n        }\n    });\n  }\n}\n\nreturn results;"
+      },
+      "id": "97c64b48-e5ad-40a5-b9e8-386dd83f27cb",
+      "name": "Code",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        840,
+        280
+      ]
+    },
+    {
+      "parameters": {
+        "requestFormat": "json",
+        "query": "mutation ($role: String!, $action: String!, $collection: String!) {\n  insert_directus_permissions(objects: {role: $role, collection: $collection, fields: \"*\", permissions: \"{}\", action: $action}) {\n    affected_rows\n  }\n}",
+        "variables": "={\n   \"role\": \"{{$json[\"role\"]}}\",\n   \"action\": \"{{$json[\"action\"]}}\",\n   \"collection\": \"{{$json[\"collection\"]}}\"\n}"
+      },
+      "id": "9012cb22-62af-4de2-8bd9-d05f4cac00c3",
+      "name": "GraphQL",
+      "type": "n8n-nodes-base.graphql",
+      "typeVersion": 1,
+      "position": [
+        1060,
+        280
+      ]
+    }
+  ],
+  "pinData": {
+    "On clicking 'execute'": [
+      {
+        "json": {
+          "name": "First item",
+          "code": 1
+        }
+      }
+    ]
+  },
+  "connections": {
+    "On clicking 'execute'": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "GraphQL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {},
+  "id": 108,
+  "meta": {
+    "instanceId": "007a72f771a24c02eebc4ff30ad8164b017b2cc7c0d0b07b4021b2a89bbbf66f"
+  },
+  "tags": []
+}
