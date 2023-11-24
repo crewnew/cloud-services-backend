@@ -1,4 +1,8 @@
-# 01 - User Stories
+# Intro
+
+https://www.youtube.com/watch?v=WJTdg1AsSz0
+
+## 01 - User Stories
 
 1. As an admin, we want to email everybody who have unpaid invoices: `Hi {first_name}, you have unpaid invoice in total {total}€. Pay it ASAP please.` (well, actually you should GPT "Unpaid invoice reminder email" and modify it).
 2. As a customer I need multiple users to share the company account and everything that the company is related to (invoices, rooms, etc). TODO: Query user who's first name is something that you have in the database and see all the rooms that can be accessed. First make sure that that user has in test data at least one room.
