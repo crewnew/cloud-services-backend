@@ -1,6 +1,6 @@
 # Basics
 
-## One to Many and Many to One Relationships
+## One to Many (O2M) and Many to One (M2O) Relationships
 
 This is the most commonly used type of relationship. Consider an e-commerce website, with the following:
 
@@ -18,7 +18,7 @@ Each customer may have zero, one or multiple orders. But an order can belong to 
 
 ![O2M](o2m.png)
 
-## Many to Many Relationships
+## Many to Many Relationships (M2M)
 
 In some cases, you may need multiple instances on both sides of the relationship. For example, each order can contain multiple items. And each item can also be in multiple orders.
 
@@ -26,12 +26,12 @@ For these relationships, we need to create an extra table:
 
 ![M2M tables](m2m-tables.png)
 
-The Items_Orders table has only one purpose, and that is to create a "Many to Many" relationship between the items and the orders.
+The `items_orders` table has only one purpose, and that is to create a "Many to Many" relationship between the items and the orders. In M2M relationship we need always a `joint table` to connect the two tables that need M2M relationship between them.
 
 Here is a how we can visualize this kind of relationship:
 
 ![M2M](m2m_1.png)
 
-If you want to include the items_orders records in the graph, it may look like this:
+If you want to include the `items_orders` records in the graph, it may look like this:
 
 ![M2M](m2m_2.png)
