@@ -35,3 +35,19 @@ Here is a how we can visualize this kind of relationship:
 If you want to include the `items_orders` records in the graph, it may look like this:
 
 ![M2M](m2m_2.png)
+
+## Self Referencing Relationships
+
+This is used when a table needs to have a relationship with itself. For example, let's say you have a referral program. Customers can refer other customers to your shopping website. The table may look like this:
+
+![Referrals](customers_referrals.png)
+
+Customers 102 and 103 were referred by the customer 101.
+
+This actually can also be similar to "one to many" relationship since one customer can refer multiple customers. Also it can be visualized like a tree structure:
+
+![Self referencing](self_referencing.png)
+
+One customer might refer zero, one or multiple customers. Each customer can be referred by only one customer, or none at all.
+
+If you would like to create a self referencing "many to many" relationship, you would need an extra table like just like we talked about in the last section.
