@@ -57,3 +57,7 @@ If you would like to create a self referencing "many to many" relationship, you 
 In the relationship examples above, we always had these "****_id" fields that referenced a column in another table. In our example, the `customer_id` column in the `orders` table is a Foreign Key (FK) column. 
 
 The FK has M2O relationship to the `orders` table Primary Key (PK) column. The PK column is the column that uniquely identifies each row in the table. It is a good practice to always have the first column and call it `id`. In our example it is `integer` type that is the simplest and was standard at antique times. Today it is rather UUID (Universally Unique Identifier) that is used as PK and that looks something like this `5e8a48dc-a0f7-11ee-8c90-0242ac120002`.
+
+## One to One Relationships (O2O)
+
+Let's say we have two types of customers: regular customers and resellers. So for the most of the customers we do not need the information that resellers need so we don't want to keep the reseller information in the `users` or `customers` table. So we create a separate table for `resellers` for that purpose and store such data there. In that case we need O2O relationship between `customers` and `resellers` tables. Reselles table will have `customer_id` FK to the `customers` table PK in the same way we would have O2M relationship. The difference is that just one record can represent just one record in both tables.
