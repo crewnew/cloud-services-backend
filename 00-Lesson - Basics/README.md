@@ -51,3 +51,9 @@ This actually can also be similar to "one to many" relationship since one custom
 One customer might refer zero, one or multiple customers. Each customer can be referred by only one customer, or none at all.
 
 If you would like to create a self referencing "many to many" relationship, you would need an extra table like just like we talked about in the last section.
+
+## Definitions: Foreign Keys and Primary Keys
+
+In the relationship examples above, we always had these "****_id" fields that referenced a column in another table. In our example, the `customer_id` column in the `orders` table is a Foreign Key (FK) column. 
+
+The FK has M2O relationship to the `orders` table Primary Key (PK) column. The PK column is the column that uniquely identifies each row in the table. It is a good practice to always have the first column and call it `id`. In our example it is `integer` type that is the simplest and was standard at antique times. Today it is rather UUID (Universally Unique Identifier) that is used as PK and that looks something like this `5e8a48dc-a0f7-11ee-8c90-0242ac120002`.
