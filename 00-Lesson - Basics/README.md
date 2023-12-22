@@ -1,5 +1,7 @@
 # Basics
 
+When creating a database (DB), common sense dictates that we use separate tables for different types of entities. Some examples are: customers, orders, items, messages etc. But we also need to have relationships between these tables. For instance, customers make orders, and orders contain items. These relationships need to be represented in the database.
+
 ## One to Many (O2M) and Many to One (M2O) Relationships
 
 This is the most commonly used type of relationship. Consider an e-commerce website, with the following:
