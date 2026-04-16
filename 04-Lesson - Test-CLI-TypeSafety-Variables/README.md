@@ -46,7 +46,7 @@ This command will export the metadata and create a metadata directory inside you
 
 6. To export the migrations, run the following command:
 
-`hasura migrate create <migration_name> --from-server`(name, eg.`init`)
+`hasura migrate create "migration-name-here" --from-server --database-name default` (change "migration-name-here", eg.`init` and "default" to whatever database you are using but default database is called "default")
 
 This command will create a new folder inside the migrations directory with the given migration name and a timestamp/version. The folder will contain two files: up.sql and down.sql, representing the forward and backward migration steps, respectively. Initial one won't have down.
 
