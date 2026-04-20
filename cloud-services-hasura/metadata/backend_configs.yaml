@@ -1,0 +1,9 @@
+dataconnector:
+  athena:
+    uri: http://localhost:8081/api/v1/athena
+  mysql8:
+    uri: http://localhost:8081/api/v1/mysql
+  oracle:
+    uri: http://localhost:8081/api/v1/oracle
+  snowflake:
+    uri: http://localhost:8081/api/v1/snowflake
